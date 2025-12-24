@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sắp xếp Đơn vị Hành chính Huế - Nghị quyết 1675</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></script>
     <style>
         * {
             margin: 0;
@@ -219,9 +220,9 @@
         }
         
         .map-frame {
-            width: 90%;
-            height: 90%;
-            border: 2px solid #1a237e;
+            width: 100%;
+            height: 100%;
+            border: none;
             border-radius: 10px;
             overflow: hidden;
             position: relative;
@@ -229,46 +230,45 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .map-preview {
+        #hue-map {
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(rgba(26, 35, 126, 0.1), rgba(26, 35, 126, 0.1)),
-                url('https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l+ff0000(107.5909,16.4637)/107.5909,16.4637,11,0/600x400?access_token=pk.eyJ1IjoiZGV2c2ltcGxlIiwiYSI6ImNrbG85aGd2dTAwdWsydm1zN2s1MDFxZ3kifQ.FSf6FhD15M3i9tR_FxRo0w') center/cover no-repeat;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            border-radius: 10px;
         }
         
-        .map-marker {
+        .map-overlay {
             position: absolute;
-            width: 30px;
-            height: 40px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FF0000"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>') no-repeat center;
-            background-size: contain;
-            animation: marker-pulse 2s infinite;
-            top: 45%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .map-label-box {
+            position: absolute;
+            bottom: 15px;
             left: 50%;
-            transform: translate(-50%, -100%);
-        }
-        
-        @keyframes marker-pulse {
-            0% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
-            50% { transform: translate(-50%, -100%) scale(1.2); opacity: 0.8; }
-            100% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
-        }
-        
-        .map-label {
-            position: absolute;
-            bottom: 10px;
+            transform: translateX(-50%);
             background: rgba(26, 35, 126, 0.9);
             color: white;
-            padding: 8px 15px;
+            padding: 8px 20px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 600;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .map-label-box:hover {
+            background: rgba(26, 35, 126, 1);
+            transform: translateX(-50%) scale(1.05);
         }
         
         .image-caption {
@@ -284,12 +284,15 @@
             transform: translateY(100%);
             transition: transform 0.5s ease;
             text-align: center;
+            z-index: 20;
         }
         
         .main-image:hover .image-caption {
             transform: translateY(0);
         }
         
+        /* Phần còn lại của CSS giữ nguyên... */
+
         .identifiers-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -655,7 +658,7 @@
             }
             
             .main-image {
-                height: 180px;
+                height: 200px;
             }
             
             table {
@@ -690,7 +693,7 @@
             }
             
             .main-image {
-                height: 150px;
+                height: 180px;
             }
             
             .identifier-img {
@@ -763,13 +766,6 @@
             animation: stamp-pulse 1.5s infinite alternate;
         }
         
-        /* Hiệu ứng cho marker trên bản đồ */
-        @keyframes marker-pulse {
-            0% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
-            50% { transform: translate(-50%, -100%) scale(1.2); opacity: 0.8; }
-            100% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
-        }
-        
         /* Tối ưu cho cảm ứng trên mobile */
         .identifier-card,
         .stamp,
@@ -812,9 +808,25 @@
                     <div class="main-image animate-on-scroll">
                         <div class="map-container">
                             <div class="map-frame">
+                                <!-- Bản đồ Google Maps sẽ được tạo ở đây -->
                                 <div class="map-preview">
-                                    <div class="map-marker"></div>
+                                    <iframe 
+                                         src="https://www.google.com/maps?q=Thành%20phố%20Huế&output=embed"
+                                        width="100%"
+                                        height="100%"
+                                        style="border:0;"
+                                        allowfullscreen=""
+                                        loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
                                     <div class="map-label">Thành phố Huế</div>
+                                </div> 
+                                <div id="hue-map"></div>
+                                <div class="map-overlay">
+                                    <div class="map-label-box">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Thành phố Huế</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -825,22 +837,22 @@
                     
                     <div class="identifiers-grid">
                         <div class="identifier-card animate-on-scroll">
-                            <img src="https://images.unsplash.com/photo-1594810204155-d4a3d1dff611?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Phường rộng nhất Huế" class="identifier-img" loading="lazy">
+                            <img src="https://media.baovanhoa.vn/zoom/1000/uploaded/ngothithuytrang/2025_07_05/pd1_lzci.jpg" alt="Phường rộng nhất Huế" class="identifier-img" loading="lazy">
                             <div class="identifier-title">Phường rộng nhất Huế</div>
                         </div>
                         
                         <div class="identifier-card animate-on-scroll">
-                            <img src="https://images.unsplash.com/photo-1552074284-5f1d91ad4b6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chiến khu cách mạng" class="identifier-img" loading="lazy">
+                            <img src="https://file.huengaynay.vn/data2/image/fckeditor/upload/2017/20170310/images/chien-khu.jpg" alt="Chiến khu cách mạng" class="identifier-img" loading="lazy">
                             <div class="identifier-title">Chiến khu Hòa Mĩ</div>
                         </div>
                         
                         <div class="identifier-card animate-on-scroll">
-                            <img src="https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Di tích lịch sử" class="identifier-img" loading="lazy">
+                            <img src="https://api.sovaba.travel/uploads/quan_the_di_tich_co_do_hue_15c1db7160.jpg" alt="Di tích lịch sử" class="identifier-img" loading="lazy">
                             <div class="identifier-title">Di tích lịch sử Huế</div>
                         </div>
                         
                         <div class="identifier-card animate-on-scroll">
-                            <img src="https://images.unsplash.com/photo-1589652043056-ba1a2c4830a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cảnh quan thiên nhiên" class="identifier-img" loading="lazy">
+                            <img src="https://static.vinwonders.com/production/danh-lam-thang-canh-hue-1.jpg" alt="Cảnh quan thiên nhiên" class="identifier-img" loading="lazy">
                             <div class="identifier-title">Cảnh quan thiên nhiên</div>
                         </div>
                     </div>
@@ -905,6 +917,95 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Khởi tạo Google Maps
+            function initMap() {
+                // Tọa độ thành phố Huế
+                const hueLocation = { lat: 16.4637, lng: 107.5909 };
+                
+                // Tạo bản đồ
+                const map = new google.maps.Map(document.getElementById('hue-map'), {
+                    zoom: 12,
+                    center: hueLocation,
+                    mapTypeId: 'roadmap',
+                    styles: [
+                        {
+                            featureType: "all",
+                            elementType: "labels.text.fill",
+                            stylers: [{ color: "#1a237e" }]
+                        },
+                        {
+                            featureType: "water",
+                            elementType: "geometry",
+                            stylers: [{ color: "#c3cfe2" }]
+                        },
+                        {
+                            featureType: "road",
+                            elementType: "geometry",
+                            stylers: [{ color: "#f5f5f5" }]
+                        },
+                        {
+                            featureType: "road.highway",
+                            elementType: "geometry",
+                            stylers: [{ color: "#e0e0e0" }]
+                        }
+                    ],
+                    disableDefaultUI: true,
+                    zoomControl: true,
+                    mapTypeControl: false,
+                    scaleControl: true,
+                    streetViewControl: false,
+                    rotateControl: false,
+                    fullscreenControl: false
+                });
+                
+                // Thêm marker cho Huế
+                const marker = new google.maps.Marker({
+                    position: hueLocation,
+                    map: map,
+                    title: 'Thành phố Huế',
+                    animation: google.maps.Animation.DROP,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: "#FF0000",
+                        fillOpacity: 1,
+                        strokeColor: "#FFFFFF",
+                        strokeWeight: 2
+                    }
+                });
+                
+                // Thêm info window
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="padding: 10px; max-width: 200px;">
+                            <h3 style="margin: 0 0 5px 0; color: #1a237e;">Thành phố Huế</h3>
+                            <p style="margin: 0; font-size: 14px;">Di sản Văn hóa Thế giới UNESCO</p>
+                            <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">
+                                Cố đô Việt Nam, tỉnh Thừa Thiên Huế
+                            </p>
+                        </div>
+                    `
+                });
+                
+                // Mở info window khi click marker
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+                
+                // Tự động mở info window sau 1 giây
+                setTimeout(() => {
+                    infoWindow.open(map, marker);
+                }, 1000);
+                
+                // Đóng info window khi click ra ngoài
+                map.addListener('click', () => {
+                    infoWindow.close();
+                });
+            }
+            
+            // Gọi hàm khởi tạo bản đồ
+            initMap();
+            
             const postcard = document.querySelector('.postcard');
             const animateElements = document.querySelectorAll('.animate-on-scroll');
             const stamp = document.querySelector('.stamp');
