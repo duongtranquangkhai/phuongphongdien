@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Postcard Giới Thiệu: Sắp xếp Đơn vị Hành chính Huế</title>
+    <title>Sắp xếp Đơn vị Hành chính Huế - Nghị quyết 1675</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         * {
             margin: 0;
@@ -127,7 +126,7 @@
         }
         
         .postcard:hover {
-            transform: rotateY(8deg) rotateX(3deg) scale(1.03);
+            transform: rotateY(5deg) rotateX(3deg) scale(1.02);
             box-shadow: 
                 0 40px 80px rgba(0, 0, 0, 0.25),
                 0 0 30px rgba(26, 35, 126, 0.1);
@@ -159,13 +158,14 @@
         }
         
         .postcard-title {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             margin-bottom: 10px;
             position: relative;
             z-index: 2;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             letter-spacing: 0.5px;
+            line-height: 1.4;
         }
         
         .postcard-subtitle {
@@ -174,7 +174,7 @@
             font-weight: 300;
             position: relative;
             z-index: 2;
-            max-width: 80%;
+            max-width: 100%;
         }
         
         .postcard-body {
@@ -200,6 +200,7 @@
             position: relative;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             transition: all 0.5s ease;
+            background: #f5f5f5;
         }
         
         .main-image:hover {
@@ -207,15 +208,67 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
         }
         
-        .main-image img {
+        .map-container {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s ease;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e8f5e9;
         }
         
-        .main-image:hover img {
-            transform: scale(1.05);
+        .map-frame {
+            width: 90%;
+            height: 90%;
+            border: 2px solid #1a237e;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-preview {
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(26, 35, 126, 0.1), rgba(26, 35, 126, 0.1)),
+                url('https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l+ff0000(107.5909,16.4637)/107.5909,16.4637,11,0/600x400?access_token=pk.eyJ1IjoiZGV2c2ltcGxlIiwiYSI6ImNrbG85aGd2dTAwdWsydm1zN2s1MDFxZ3kifQ.FSf6FhD15M3i9tR_FxRo0w') center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .map-marker {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FF0000"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>') no-repeat center;
+            background-size: contain;
+            animation: marker-pulse 2s infinite;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+        }
+        
+        @keyframes marker-pulse {
+            0% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -100%) scale(1.2); opacity: 0.8; }
+            100% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
+        }
+        
+        .map-label {
+            position: absolute;
+            bottom: 10px;
+            background: rgba(26, 35, 126, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
         .image-caption {
@@ -230,6 +283,7 @@
             font-weight: 500;
             transform: translateY(100%);
             transition: transform 0.5s ease;
+            text-align: center;
         }
         
         .main-image:hover .image-caption {
@@ -332,6 +386,7 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
             transform: translateY(0);
             transition: transform 0.4s ease;
+            -webkit-overflow-scrolling: touch;
         }
         
         .table-container:hover {
@@ -455,6 +510,7 @@
             flex-wrap: wrap;
             border-top: 2px solid #e0e0e0;
             position: relative;
+            gap: 20px;
         }
         
         .postcard-footer::before {
@@ -483,6 +539,7 @@
             overflow: hidden;
             transition: all 0.5s ease;
             cursor: pointer;
+            flex-shrink: 0;
         }
         
         .stamp:hover {
@@ -520,6 +577,7 @@
             color: #666;
             text-align: right;
             max-width: 300px;
+            flex: 1;
         }
         
         .signature p {
@@ -531,6 +589,7 @@
             color: #1a237e;
         }
         
+        /* Responsive cho điện thoại */
         @media (max-width: 900px) {
             .postcard-body {
                 flex-direction: column;
@@ -541,11 +600,36 @@
             }
             
             .postcard-title {
-                font-size: 26px;
+                font-size: 24px;
             }
             
             .postcard-content {
                 padding: 25px;
+            }
+            
+            .postcard-header {
+                padding: 25px;
+            }
+            
+            .postcard-footer {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .stamp {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .stamp-text {
+                font-size: 11px;
+            }
+            
+            .signature {
+                text-align: center;
+                max-width: 100%;
             }
         }
         
@@ -554,12 +638,63 @@
                 grid-template-columns: 1fr;
             }
             
-            .postcard-header {
-                padding: 25px;
-            }
-            
             .postcard-title {
                 font-size: 22px;
+            }
+            
+            .postcard-subtitle {
+                font-size: 16px;
+            }
+            
+            .resolution-title {
+                font-size: 20px;
+            }
+            
+            .postcard-image-section {
+                padding: 20px;
+            }
+            
+            .main-image {
+                height: 180px;
+            }
+            
+            table {
+                min-width: 400px;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+            
+            .cultural-value {
+                padding: 20px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .postcard-title {
+                font-size: 20px;
+            }
+            
+            .postcard-header {
+                padding: 20px;
+            }
+            
+            .postcard-image-section, .postcard-content {
+                padding: 15px;
+            }
+            
+            .main-image {
+                height: 150px;
+            }
+            
+            .identifier-img {
+                height: 80px;
             }
         }
         
@@ -578,7 +713,7 @@
         /* Hiệu ứng cho biểu tượng */
         .floating-icon {
             position: absolute;
-            font-size: 28px;
+            font-size: 24px;
             color: rgba(255, 255, 255, 0.8);
             z-index: 1;
             animation: float-icon 8s infinite ease-in-out;
@@ -627,6 +762,29 @@
         .stamp-animation {
             animation: stamp-pulse 1.5s infinite alternate;
         }
+        
+        /* Hiệu ứng cho marker trên bản đồ */
+        @keyframes marker-pulse {
+            0% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -100%) scale(1.2); opacity: 0.8; }
+            100% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
+        }
+        
+        /* Tối ưu cho cảm ứng trên mobile */
+        .identifier-card,
+        .stamp,
+        .table-container {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Cải thiện khả năng đọc trên mobile */
+        @media (max-width: 768px) {
+            .resolution-detail,
+            .cultural-value p {
+                font-size: 15px;
+                line-height: 1.6;
+            }
+        }
     </style>
 </head>
 <body>
@@ -646,36 +804,43 @@
                 <div class="floating-icon icon-3"><i class="fas fa-flag"></i></div>
                 <div class="floating-icon icon-4"><i class="fas fa-history"></i></div>
                 
-                <h1 class="postcard-title animate-on-scroll">Sắp xếp Đơn vị Hành chính Huế</h1>
-                <p class="postcard-subtitle animate-on-scroll">Theo Nghị quyết 1675/NQ-UBTVQH15 của Ủy ban Thường vụ Quốc hội</p>
+                <h1 class="postcard-title animate-on-scroll">Theo Nghị quyết 1675/NQ-UBTVQH15 về việc sắp xếp các đơn vị hành chính cấp xã của thành phố Huế</h1>
             </div>
             
             <div class="postcard-body">
                 <div class="postcard-image-section">
                     <div class="main-image animate-on-scroll">
-                        <img src="https://images.unsplash.com/photo-1552074284-5f1d91ad4b6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Thành phố Huế">
-                        <div class="image-caption">Thành phố Huế - Di sản Văn hóa Thế giới</div>
+                        <div class="map-container">
+                            <div class="map-frame">
+                                <div class="map-preview">
+                                    <div class="map-marker"></div>
+                                    <div class="map-label">Thành phố Huế</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-caption">Bản đồ Thành phố Huế - Di sản Văn hóa Thế giới</div>
                     </div>
+                    
                     <h3 class="resolution-title"><i class="fas fa-images"></i> Dấu hiệu nhận diện đặc trưng</h3>
                     
                     <div class="identifiers-grid">
                         <div class="identifier-card animate-on-scroll">
-                            <img src="https://images.unsplash.com/photo-1591104831692-d8b4b58de5f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Phường rộng nhất Huế" class="identifier-img">
+                            <img src="https://images.unsplash.com/photo-1594810204155-d4a3d1dff611?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Phường rộng nhất Huế" class="identifier-img" loading="lazy">
                             <div class="identifier-title">Phường rộng nhất Huế</div>
                         </div>
                         
                         <div class="identifier-card animate-on-scroll">
-                            <img src="https://images.unsplash.com/photo-1589652043056-ba1a2c4830a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Chiến khu cách mạng" class="identifier-img">
+                            <img src="https://images.unsplash.com/photo-1552074284-5f1d91ad4b6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chiến khu cách mạng" class="identifier-img" loading="lazy">
                             <div class="identifier-title">Chiến khu Hòa Mĩ</div>
                         </div>
                         
                         <div class="identifier-card animate-on-scroll">
-                            <img src="https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Di tích lịch sử" class="identifier-img">
-                            <div class="identifier-title">Di tích lịch sử</div>
+                            <img src="https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Di tích lịch sử" class="identifier-img" loading="lazy">
+                            <div class="identifier-title">Di tích lịch sử Huế</div>
                         </div>
                         
                         <div class="identifier-card animate-on-scroll">
-                            <img src="https://images.unsplash.com/photo-1552074284-5f1d91ad4b6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Cảnh quan thiên nhiên" class="identifier-img">
+                            <img src="https://images.unsplash.com/photo-1589652043056-ba1a2c4830a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cảnh quan thiên nhiên" class="identifier-img" loading="lazy">
                             <div class="identifier-title">Cảnh quan thiên nhiên</div>
                         </div>
                     </div>
@@ -684,15 +849,14 @@
                 <div class="postcard-content">
                     <div class="resolution-info">
                         <h2 class="resolution-title animate-on-scroll"><i class="fas fa-file-contract"></i> Thông tin Nghị quyết</h2>
-                        <p class="resolution-detail animate-on-scroll">Nghị quyết số 1675/NQ-UBTVQH15 về việc sắp xếp các đơn vị hành chính cấp xã của thành phố Huế, tỉnh Thừa Thiên Huế, nhằm hoàn thiện tổ chức hành chính, nâng cao hiệu lực, hiệu quả quản lý nhà nước, phù hợp với tình hình phát triển kinh tế - xã hội của địa phương.</p>
+                        <p class="resolution-detail animate-on-scroll">Nghị quyết số 1675/NQ-UBTVQH15 về việc sắp xếp các đơn vị hành chính cấp xã của thành phố Huế, tỉnh Thừa Thiên Huế. Nghị quyết được ban hành nhằm hoàn thiện tổ chức hành chính, nâng cao hiệu lực, hiệu quả quản lý nhà nước, phù hợp với tình hình phát triển kinh tế - xã hội của địa phương.</p>
                     </div>
                     
-                    <h2 class="resolution-title animate-on-scroll"><i class="fas fa-table"></i> Thay đổi Đơn vị Hành chính</h2>
+                    <h2 class="resolution-title animate-on-scroll"><i class="fas fa-table"></i> Sắp xếp đơn vị hành chính</h2>
                     <div class="table-container pulse animate-on-scroll">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>STT</th>
                                     <th>Xã, phường trước sắp xếp</th>
                                     <th>Xã/phường sau sắp xếp</th>
                                     <th>Dấu hiệu nhận diện và giá trị văn hóa đặc trưng</th>
@@ -700,7 +864,6 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>1</td>
                                     <td>Phường Phong Thu, xã Phong Mỹ và xã Phong Xuân</td>
                                     <td><span class="highlight">Phong Điền</span></td>
                                     <td>
@@ -710,17 +873,13 @@
                                         </ul>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td colspan="3" style="text-align: center; color: #666; font-style: italic;">Và các đơn vị hành chính khác theo Nghị quyết</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                     
                     <div class="cultural-value glow animate-on-scroll">
-                        <h3><i class="fas fa-landmark-flag"></i> Chiến khu Hòa Mĩ - Di tích Lịch sử Cách mạng</h3>
-                        <p>Tại xã Phong Mỹ cũ, đây là căn cứ địa cách mạng đầu tiên của tỉnh Thừa Thiên Huế trong cuộc kháng chiến chống thực dân Pháp. Khu vực này mang đậm giá trị lịch sử, văn hóa và truyền thống cách mạng, là biểu tượng của tinh thần đấu tranh kiên cường của nhân dân Thừa Thiên Huế. Ngày nay, Chiến khu Hòa Mĩ không chỉ là di tích lịch sử mà còn là điểm đến giáo dục truyền thống cho thế hệ trẻ.</p>
+                        <h3><i class="fas fa-landmark-flag"></i> Chiến khu Hòa Mĩ</h3>
+                        <p>Tại xã Phong Mỹ cũ, đây là căn cứ địa cách mạng đầu tiên của tỉnh Thừa Thiên Huế trong cuộc kháng chiến chống thực dân Pháp. Khu vực này mang đậm giá trị lịch sử, văn hóa và truyền thống cách mạng, là biểu tượng của tinh thần đấu tranh kiên cường của nhân dân Thừa Thiên Huế.</p>
                     </div>
                 </div>
             </div>
@@ -731,12 +890,12 @@
                         <div>NGHỊ QUYẾT</div>
                         <div>1675</div>
                         <div>UBTVQH15</div>
-                        <div>THÀNH PHỐ HUẾ</div>
+                        <div>HUẾ</div>
                     </div>
                 </div>
                 
                 <div class="signature animate-on-scroll">
-                    <p>Thông tin hành chính cập nhật theo Nghị quyết mới nhất</p>
+                    <p>Thông tin hành chính cập nhật theo Nghị quyết 1675/NQ-UBTVQH15</p>
                     <p>Thành phố Huế - Di sản Văn hóa Thế giới</p>
                     <p><i class="fas fa-calendar-alt"></i> Cập nhật: 2023</p>
                 </div>
@@ -752,7 +911,7 @@
             
             // Hiệu ứng khi di chuột vào postcard
             postcard.addEventListener('mouseenter', function() {
-                this.style.transform = 'rotateY(8deg) rotateX(3deg) scale(1.03)';
+                this.style.transform = 'rotateY(5deg) rotateX(3deg) scale(1.02)';
             });
             
             postcard.addEventListener('mouseleave', function() {
@@ -769,10 +928,30 @@
                 card.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0)';
                 });
+                
+                // Thêm sự kiện touch cho mobile
+                card.addEventListener('touchstart', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                card.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(0)';
+                    }, 300);
+                });
             });
             
             // Hiệu ứng cho stamp
             stamp.addEventListener('click', function() {
+                this.classList.toggle('stamp-animation');
+                this.style.transform = 'rotate(12deg) scale(1.15)';
+                setTimeout(() => {
+                    this.style.transform = 'rotate(12deg) scale(1)';
+                    this.classList.add('stamp-animation');
+                }, 1000);
+            });
+            
+            stamp.addEventListener('touchstart', function() {
                 this.classList.toggle('stamp-animation');
                 this.style.transform = 'rotate(12deg) scale(1.15)';
                 setTimeout(() => {
@@ -811,21 +990,81 @@
                 });
             });
             
-            // Thêm hiệu ứng cho tiêu đề
-            const title = document.querySelector('.postcard-title');
-            title.innerHTML = title.textContent.split('').map((char, i) => 
-                `<span style="animation-delay: ${i * 0.05}s">${char}</span>`
-            ).join('');
-            
-            // Hiệu ứng cho card văn hóa
-            const culturalCard = document.querySelector('.cultural-value');
-            culturalCard.addEventListener('mouseenter', function() {
-                this.classList.add('glow');
+            // Thêm fallback cho hình ảnh
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    console.log('Hình ảnh không tải được:', this.src);
+                    // Tạo placeholder màu đẹp thay vì hình ảnh bị lỗi
+                    const colors = ['#1a237e', '#283593', '#3949ab', '#5c6bc0'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 600;
+                    canvas.height = 400;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Vẽ nền gradient
+                    const gradient = ctx.createLinearGradient(0, 0, 600, 400);
+                    gradient.addColorStop(0, randomColor);
+                    gradient.addColorStop(1, lightenColor(randomColor, 40));
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, 600, 400);
+                    
+                    // Vẽ icon
+                    ctx.fillStyle = 'white';
+                    ctx.font = '60px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('🏛️', 300, 150);
+                    
+                    // Vẽ text
+                    ctx.font = 'bold 24px Arial';
+                    ctx.fillText('Hình ảnh minh họa', 300, 250);
+                    
+                    ctx.font = '18px Arial';
+                    ctx.fillText('Thành phố Huế', 300, 290);
+                    
+                    this.src = canvas.toDataURL();
+                });
             });
             
-            culturalCard.addEventListener('mouseleave', function() {
-                this.classList.remove('glow');
-            });
+            // Hàm làm sáng màu
+            function lightenColor(color, percent) {
+                const num = parseInt(color.replace("#", ""), 16);
+                const amt = Math.round(2.55 * percent);
+                const R = (num >> 16) + amt;
+                const G = (num >> 8 & 0x00FF) + amt;
+                const B = (num & 0x0000FF) + amt;
+                
+                return "#" + (
+                    0x1000000 +
+                    (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                    (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                    (B < 255 ? B < 1 ? 0 : B : 255)
+                ).toString(16).slice(1);
+            }
+            
+            // Tối ưu cho mobile: giảm hiệu ứng hover trên mobile
+            if ('ontouchstart' in window) {
+                postcard.style.transform = 'none';
+                postcard.style.transition = 'transform 0.3s ease';
+                
+                // Thay đổi hiệu ứng hover thành tap trên mobile
+                const hoverElements = document.querySelectorAll('.identifier-card, .cultural-value, .table-container');
+                hoverElements.forEach(el => {
+                    el.addEventListener('touchstart', function() {
+                        this.style.transform = 'scale(0.98)';
+                    });
+                    
+                    el.addEventListener('touchend', function() {
+                        setTimeout(() => {
+                            this.style.transform = 'scale(1)';
+                        }, 200);
+                    });
+                });
+            }
         });
     </script>
 </body>
